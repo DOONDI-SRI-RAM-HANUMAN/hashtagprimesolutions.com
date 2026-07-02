@@ -618,22 +618,7 @@ font-family:'Plus Jakarta Sans',sans-serif!important;
 /* Anchor scroll offset matches new fixed header height */
 section{scroll-margin-top:var(--header-total)!important}
 </style>
-<style id="chatgpt-mobile-fixes">
-@media (max-width:768px){
-html,body{overflow-x:hidden!important}
-.container{padding:0 16px!important}
-.hero{min-height:auto!important;padding-top:170px!important;padding-bottom:60px!important}
-.hero-content,.hero .container.hero-content{text-align:center!important;margin:0 auto!important;max-width:100%!important}
-.hero h1{font-size:2rem!important;line-height:1.2!important}
-.hero p.lead{font-size:1rem!important;text-align:center!important}
-.hero-cta{flex-direction:column!important;align-items:stretch!important}
-.hero-cta .btn{width:100%;justify-content:center}
-.services-grid,.about-grid,.contact-grid,.why-grid,.tech-grid,.hl-grid,.counters-grid,.foot-grid{
-grid-template-columns:1fr!important}
-.service-card,.form-card,.contact-info{padding:22px!important}
-img{max-width:100%;height:auto}
-}
-</style>
+
 <style id="mobile-header-fix">
 @media(max-width:768px){
 .brand{gap:8px!important}
@@ -688,33 +673,46 @@ gap:3px!important;
 }
 </style>
 
-<style id="mobile-left-align-fix">
+
+
+<style id="hero-mobile-reference-fix">
 @media (max-width:768px){
-.hero-content,
-.hero .container.hero-content{
+.hero{padding-top:145px!important;padding-bottom:70px!important;min-height:560px!important}
+.hero-content,.hero .container.hero-content{
 text-align:left!important;
-align-items:flex-start!important;
 margin:0!important;
 padding-left:18px!important;
 padding-right:18px!important;
+max-width:340px!important;
 }
-.hero .eyebrow,
-.hero h1,
+.hero .eyebrow{
+text-align:left!important;
+font-size:16px!important;
+margin:0 0 10px 0!important;
+}
+.hero h1{
+text-align:left!important;
+font-size:56px!important;
+line-height:0.95!important;
+margin:0 0 14px 0!important;
+max-width:280px!important;
+}
 .hero p.lead{
 text-align:left!important;
-margin-left:0!important;
-margin-right:0!important;
+font-size:15px!important;
+line-height:1.8!important;
+max-width:250px!important;
+margin:0 0 24px 0!important;
 }
-.hero-cta{
-justify-content:flex-start!important;
-align-items:flex-start!important;
-}
+.hero-cta{justify-content:flex-start!important}
 .hero-cta .btn{
 width:auto!important;
-min-width:170px;
+min-width:150px!important;
+padding:12px 22px!important;
 }
 }
 </style>
+
 </head>
 <body>
 <!-- Loader -->
