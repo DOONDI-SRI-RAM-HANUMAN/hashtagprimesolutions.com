@@ -624,6 +624,24 @@ font-family:'Plus Jakarta Sans',sans-serif!important;
 section{scroll-margin-top:var(--header-total)!important}
 </style>
 
+
+<style id="chatgpt-mobile-fixes">
+@media (max-width:768px){
+html,body{overflow-x:hidden!important}
+.container{padding:0 16px!important}
+.hero{min-height:auto!important;padding-top:170px!important;padding-bottom:60px!important}
+.hero-content,.hero .container.hero-content{text-align:center!important;margin:0 auto!important;max-width:100%!important}
+.hero h1{font-size:2rem!important;line-height:1.2!important}
+.hero p.lead{font-size:1rem!important;text-align:center!important}
+.hero-cta{flex-direction:column!important;align-items:stretch!important}
+.hero-cta .btn{width:100%;justify-content:center}
+.services-grid,.about-grid,.contact-grid,.why-grid,.tech-grid,.hl-grid,.counters-grid,.foot-grid{
+grid-template-columns:1fr!important}
+.service-card,.form-card,.contact-info{padding:22px!important}
+img{max-width:100%;height:auto}
+}
+</style>
+
 </head>
 <body>
 <!-- Loader -->
