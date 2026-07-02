@@ -1020,8 +1020,8 @@ padding:4px 4px 10px!important;
 <!-- PASTE YOUR WEB3FORMS ACCESS KEY BELOW (value="YOUR_KEY_HERE") -->
 <!-- Get a free key at https://web3forms.com                       -->
 <!-- ============================================================ -->
-<input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY_HERE"/>
-<input type="hidden" name="subject" value="New Enquiry from Hashtag Prime Solutions Website"/>
+<input type="hidden" name="access_key" value="b65eb816-aa8a-47c3-b170-e5c33448a25f"/>
+<input type="hidden" name="subject" value="New Website Enquiry"/>
 <input type="hidden" name="from_name" value="Hashtag Prime Solutions Website"/>
 <input type="checkbox" name="botcheck" style="display:none"/>
 <div class="form-row">
@@ -1147,68 +1147,76 @@ let auto=setInterval(()=>go(idx+1),6000);
 document.querySelector('.slider').addEventListener('mouseenter',()=>clearInterval(auto));
 document.querySelector('.slider').addEventListener('mouseleave',()=>auto=setInterval(()=>go(idx+1),6000));
 
-/* Form */
-document.getElementById('contactForm').addEventListener('submit', async function(e){
-  e.preventDefault();
-  const form = e.target;
+/* Contact Form — Web3Forms */
+(function(){
+  const form = document.getElementById('contactForm');
+  if (!form) return;
   const msg = document.getElementById('formMsg');
+  const submitBtn = form.querySelector('button[type="submit"]');
 
-  // Keep existing validation
-  const fn = form.fn.value.trim();
-  const em = form.em.value.trim();
-  const ph = form.ph.value.trim();
-  const co = form.co.value;
-  const ms = form.ms.value.trim();
-  if(!fn || !em || !co || !ms){
-    msg.textContent = 'Please fill in all required fields.';
-    msg.style.color = '#c0392b';
-    msg.classList.add('show');
-    return;
-  }
-  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if(!emailRe.test(em)){
-    msg.textContent = 'Please enter a valid email address.';
-    msg.style.color = '#c0392b';
-    msg.classList.add('show');
-    return;
-  }
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
 
-  const payload = {
-    access_key: form.access_key.value,
-    subject: form.subject.value,
-    from_name: form.from_name.value,
-    replyto: em,
-    'Full Name': fn,
-    'Email': em,
-    'Phone Number': ph,
-    'Course / Service': co,
-    'Message': ms,
-    botcheck: form.botcheck.checked
-  };
-
-  try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (res.ok && data.success) {
-      msg.textContent = 'Thank you! Your enquiry has been submitted successfully. We will contact you shortly.';
-      msg.style.color = '';
-      msg.classList.add('show');
-      form.reset();
-    } else {
-      msg.textContent = 'Something went wrong. Please try again.';
+    const fn = form.fn.value.trim();
+    const em = form.em.value.trim();
+    const co = form.co.value;
+    const ms = form.ms.value.trim();
+    if(!fn || !em || !co || !ms){
+      msg.textContent = 'Please fill in all required fields.';
       msg.style.color = '#c0392b';
       msg.classList.add('show');
+      return;
     }
-  } catch(err){
-    msg.textContent = 'Something went wrong. Please try again.';
-    msg.style.color = '#c0392b';
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRe.test(em)){
+      msg.textContent = 'Please enter a valid email address.';
+      msg.style.color = '#c0392b';
+      msg.classList.add('show');
+      return;
+    }
+
+    const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = 'Sending...'; }
+    msg.textContent = 'Sending your enquiry...';
+    msg.style.color = '';
     msg.classList.add('show');
-  }
-});
+
+    try {
+      const formData = new FormData(form);
+      formData.append('Full Name', fn);
+      formData.append('Phone Number', form.ph.value.trim());
+      formData.append('Course / Service', co);
+      formData.append('replyto', em);
+
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      });
+      const data = await res.json();
+      console.log('Web3Forms response:', data);
+
+      if (res.ok && data.success === true) {
+        msg.textContent = 'Thank you! Your enquiry has been submitted successfully. We will contact you shortly.';
+        msg.style.color = '';
+        msg.classList.add('show');
+        form.reset();
+      } else {
+        const errText = (data && data.message) ? data.message : ('Submission failed (HTTP ' + res.status + ')');
+        msg.textContent = errText;
+        msg.style.color = '#c0392b';
+        msg.classList.add('show');
+      }
+    } catch(err){
+      console.error('Web3Forms submission error:', err);
+      msg.textContent = 'Network error: ' + (err && err.message ? err.message : String(err));
+      msg.style.color = '#c0392b';
+      msg.classList.add('show');
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = originalBtnText; }
+    }
+  });
+})();
 </script>
 </body>
 </html>
